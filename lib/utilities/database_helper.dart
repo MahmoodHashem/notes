@@ -51,7 +51,7 @@ class DatabaseHelper {
   }
 
 
-  Future<List<Note>> queryAllRows() async {
+  Future<List<Note>> getNoteMapList() async {
     Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query(table, orderBy: columnPriority);
 
@@ -85,6 +85,21 @@ class DatabaseHelper {
     int result = Sqflite.firstIntValue(x)!;
 
     return result;
+
+  }
+
+  Future<List<Note>> getNoteList() async {
+
+    List noteMapList = await getNoteMapList();
+    int count = noteMapList.length;
+
+    List<Note> noteList = [];
+
+    for (int i = 0; i < count; i++){
+      noteList.add(Note.fromMap(noteMapList[i]));
+    }
+
+    return noteList;
 
   }
 
